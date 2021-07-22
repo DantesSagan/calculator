@@ -1,25 +1,15 @@
-import logo from './logo.svg';
-import './App.css';
+import NumbersNlogic from './components/numbers';
+import React from 'react';
 
-function App() {
+export default function App() {
+  const [recording, setRecording] = React.useState('');
+ 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden d-flex p-4 mt-44'>
+      <div className='output' id='display'>
+        Output {recording}
+      </div>
+      <NumbersNlogic  setRecording={setRecording} />
     </div>
   );
 }
-
-export default App;
