@@ -1,47 +1,48 @@
+/* eslint-disable no-useless-escape */
 import NumbersNlogic from './components/numbers';
 import * as math from 'mathjs';
 import React from 'react';
 
 // const numbers = [
 //   {
-//     id: 'one',
-//     value: 1,
+//     keyCode: 97,
+//     keyid: 'Numpad1',
 //   },
 //   {
-//     id: 'two',
-//     value: 2,
+//     keyCode: 98,
+//     keyid: 'Numpad2',
 //   },
 //   {
-//     id: 'three',
-//     value: 3,
+//     keyCode: 99,
+//     keyid: 'Numpad3',
 //   },
 //   {
-//     id: 'four',
-//     value: 4,
+//     keyCode: 100,
+//     keyid: 'Numpad4',
 //   },
 //   {
-//     id: 'five',
-//     value: 5,
+//     keyCode: 101,
+//     keyid: 'Numpad5',
 //   },
 //   {
-//     id: 'six',
-//     value: 6,
+//     keyCode: 102,
+//     keyid: 'Numpad6',
 //   },
 //   {
-//     id: 'seven',
-//     value: 7,
+//     keyCode: 103,
+//     keyid: 'Numpad7',
 //   },
 //   {
-//     id: 'eight',
-//     value: 8,
+//     keyCode: 104,
+//     keyid: 'Numpad8',
 //   },
 //   {
-//     id: 'nine',
-//     value: 9,
+//     keyCode: 105,
+//     keyid: 'Numpad9',
 //   },
 //   {
-//     id: 'zero',
-//     value: 0,
+//     keyCode: 96,
+//     keyid: 'Numpad0',
 //   },
 // ];
 
@@ -54,10 +55,32 @@ export default function App({ formula, formula2, action }) {
   const display = (symbol) => {
     setExpression((prev) => prev + symbol);
     if (expression[expression.length - 1] === '=') {
-      if (/[A-Za-z1-9.]/g.test(symbol)) {
+      if (/[A-Za-z0-9.]/g.test(symbol)) {
         setExpression(symbol);
       } else {
         setExpression(answer + symbol);
+      }
+      if (/[\.]/g.test(symbol)) {
+        setExpression(symbol);
+      } else {
+        setExpression(answer + symbol)
+          .replace(/^[0-9]+/g, '')
+          .replace(/[\.]+/g, '.');
+      }
+    }
+    setAnswer(() => symbol);
+    if (expression[expression.length - 1] === '=') {
+      if (/[0-9.]/g.test(symbol)) {
+        setAnswer(symbol);
+      } else {
+        setAnswer(answer + symbol);
+      }
+      if (/[\.]/g.test(symbol)) {
+        setExpression(symbol);
+      } else {
+        setExpression(answer + symbol)
+          .replace(/^[0-9]+/g, '')
+          .replace(/[\.]+/g, '.');
       }
     }
   };
@@ -66,8 +89,13 @@ export default function App({ formula, formula2, action }) {
     setAnswer(0);
   }
   function minusOne() {
-    setExpression(() => expression.substring(1));
-    setAnswer(() => expression.substring(1));
+    setExpression((minus) => {
+      minus = minus + '';
+      return minus
+        .split('')
+        .slice(0, minus.length - 1)
+        .join('');
+    });
   }
   function calculate() {
     if (expression) {
@@ -90,7 +118,12 @@ export default function App({ formula, formula2, action }) {
       id='main'
     >
       <div className='output grid grid-col-1 bg-black bg-opacity-60'>
-        <input value={expression} className='p-4 font-bold' id='expression' disabled />
+        <input
+          value={expression}
+          className='p-4 font-bold'
+          id='expression'
+          disabled
+        />
         <input value={answer} className='p-4 font-bold' id='display' disabled />
       </div>
       {/* Output {recording} */}

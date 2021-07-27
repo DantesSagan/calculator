@@ -103,29 +103,30 @@ export default function NumbersNlogic({
         >
           AC
         </button>
+
         <button
           className='button bg-yellow-500 active:bg-yellow-600'
-          id='one'
-          value='1'
-          onClick={() => display('1')}
+          id='seven'
+          value='7'
+          onClick={() => display('7')}
         >
-          1
+          7
         </button>
         <button
           className='button bg-yellow-500 active:bg-yellow-600'
-          id='two'
-          value='2'
-          onClick={() => display('2')}
+          id='eight'
+          value='8'
+          onClick={() => display('8')}
         >
-          2
+          8
         </button>
         <button
           className='button bg-yellow-500 active:bg-yellow-600'
-          id='three'
-          value='3'
-          onClick={() => display('3')}
+          id='nine'
+          value='9'
+          onClick={() => display('9')}
         >
-          3
+          9
         </button>
         <button
           className='button bg-yellow-500 active:bg-yellow-600'
@@ -153,28 +154,29 @@ export default function NumbersNlogic({
         </button>
         <button
           className='button bg-yellow-500 active:bg-yellow-600'
-          id='seven'
-          value='7'
-          onClick={() => display('7')}
+          id='one'
+          value='1'
+          onClick={() => display('1')}
         >
-          7
+          1
         </button>
         <button
           className='button bg-yellow-500 active:bg-yellow-600'
-          id='eight'
-          value='8'
-          onClick={() => display('8')}
+          id='two'
+          value='2'
+          onClick={() => display('2')}
         >
-          8
+          2
         </button>
         <button
           className='button bg-yellow-500 active:bg-yellow-600'
-          id='nine'
-          value='9'
-          onClick={() => display('9')}
+          id='three'
+          value='3'
+          onClick={() => display('3')}
         >
-          9
+          3
         </button>
+
         <button
           className='button bg-yellow-500 active:bg-yellow-600'
           id='zero'
