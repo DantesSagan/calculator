@@ -5,7 +5,7 @@ export default function NumbersNlogic({
   // formula,
   // formula2,
   display,
-  clear,
+  allClear,
   calculate,
   expression,
   setExpression,
@@ -99,7 +99,7 @@ export default function NumbersNlogic({
           className='button col-span-3 bg-red-500 active:bg-red-700'
           id='clear'
           value='AC'
-          onClick={clear}
+          onClick={allClear}
         >
           AC
         </button>

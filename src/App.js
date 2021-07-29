@@ -52,42 +52,65 @@ export default function App({ formula, formula2, action }) {
   const [expression, setExpression] = React.useState('');
   const [answer, setAnswer] = React.useState(expression);
 
+  // display  with expression and answer
   const display = (symbol) => {
-    setExpression((prev) => prev + symbol);
-    if (expression[expression.length - 1] === '=') {
-      if (/[A-Za-z0-9.]/g.test(symbol)) {
-        setExpression(symbol);
+    setExpression((prevValue) => {
+      if (
+        /[+*-/]/.test(symbol) &&
+        /[+*-/]/.test(prevValue[prevValue.length - 1])
+      ) {
+        let newValue;
+        if (/[-]/.test(symbol)) {
+          newValue = prevValue.slice(0, prevValue.length) + symbol;
+        } else {
+          let count = 0;
+          for (let i = 0; i < prevValue.length; i++) {
+            if (isNaN(+prevValue[i])) {
+              count++;
+            } else {
+              count = 0;
+            }
+          }
+          newValue = prevValue.slice(0, prevValue.length - count) + symbol;
+        }
+
+        setExpression(newValue);
       } else {
-        setExpression(answer + symbol);
+        if (prevValue) {
+          prevValue = prevValue + '';
+          let valArr = prevValue.split(/[+/*-]/g);
+          let lastNumber = valArr[valArr.length - 1];
+          if (!isNaN(lastNumber) && /[.]/.test(lastNumber) && symbol === '.') {
+            console.log('symbol = empty ');
+            symbol = '';
+          }
+        }
+
+        setExpression(
+          (prevValue + symbol).replace(/^0/g, '').replace(/\.+/g, '.')
+        );
       }
-      if (/[\.]/g.test(symbol)) {
-        setExpression(symbol);
-      } else {
-        setExpression(answer + symbol)
-          .replace(/^[0-9]+/g, '')
-          .replace(/[\.]+/g, '.');
-      }
-    }
-    setAnswer(() => symbol);
-    if (expression[expression.length - 1] === '=') {
-      if (/[0-9.]/g.test(symbol)) {
+    });
+
+    setAnswer((prevValue) =>
+      (prevValue + symbol).replace(/^0/g, '').replace(/\.+/g, '.')
+    );
+    if (answer[answer.length - 1] === '') {
+      if (/0-9.]/g.test(symbol)) {
         setAnswer(symbol);
       } else {
-        setAnswer(answer + symbol);
-      }
-      if (/[\.]/g.test(symbol)) {
-        setExpression(symbol);
-      } else {
-        setExpression(answer + symbol)
-          .replace(/^[0-9]+/g, '')
-          .replace(/[\.]+/g, '.');
+        setAnswer(answer + symbol)
+          .replace(/^0/g, '')
+          .replace(/\.+/g, '.');
       }
     }
   };
-  function clear() {
+  // allClear
+  function allClear() {
     setExpression('');
     setAnswer(0);
   }
+  // minusOne operand by right side
   function minusOne() {
     setExpression((minus) => {
       minus = minus + '';
@@ -97,19 +120,23 @@ export default function App({ formula, formula2, action }) {
         .join('');
     });
   }
+  // calculate with adds
   function calculate() {
     if (expression) {
       setAnswer(math.evaluate(expression));
       setExpression(math.evaluate(expression));
     } else {
-      setAnswer('Plese enter expression ;)');
+      alert('Please enter expression ;)');
     }
   }
+  // sqrt operand
   function sqrt() {
     setAnswer(math.sqrt(expression));
   }
+  // percentage operand
   function percentage() {
-    var percentage = (expression / 100) * expression;
+    var percentage = expression / 100;
+    setExpression(percentage);
     setAnswer(percentage);
   }
   return (
@@ -119,12 +146,19 @@ export default function App({ formula, formula2, action }) {
     >
       <div className='output grid grid-col-1 bg-black bg-opacity-60'>
         <input
+          placeholder='0'
           value={expression}
           className='p-4 font-bold'
           id='expression'
           disabled
         />
-        <input value={answer} className='p-4 font-bold' id='display' disabled />
+        <input
+          placeholder='0'
+          value={answer}
+          className='p-4 font-bold'
+          id='display'
+          disabled
+        />
       </div>
       {/* Output {recording} */}
       {/* {numbers.map((numberObj) => ( */}
@@ -133,7 +167,7 @@ export default function App({ formula, formula2, action }) {
         percentage={percentage}
         sqrt={sqrt}
         calculate={calculate}
-        clear={clear}
+        allClear={allClear}
         display={display}
         action={action}
         formula={formula}
